@@ -1,0 +1,111 @@
+{
+    "log": {
+        "access": "/etc/wildydev21/log/xray/nontls-access.log",
+        "error": "/etc/wildydev21/log/xray/nontls-error.log",
+        "loglevel": "info"
+    },
+    "inbounds": [
+      {
+        "port": 80,
+        "protocol": "vmess",
+        "settings": {
+          "clients": [],
+          "decryption": "none"
+        },
+        "streamSettings": {
+          "network": "ws",
+          "security": "none",
+          "wsSettings": {
+            "path": "/vmess"
+          }
+        }
+      },
+      {
+        "port": 80,
+        "protocol": "vless",
+        "settings": {
+          "clients": [],
+          "decryption": "none"
+        },
+        "streamSettings": {
+          "network": "ws",
+          "security": "none",
+          "wsSettings": {
+            "path": "/vless"
+          }
+        }
+      },
+      {
+        "listen": "127.0.0.1",
+        "port": 34809,
+        "protocol": "dokodemo-door",
+        "settings": {
+          "address": "127.0.0.1"
+        },
+        "tag": "api"
+      }
+    ],
+    "routing": {
+      "rules": [
+        {
+          "type": "field",
+          "ip": [
+            "0.0.0.0/8",
+            "10.0.0.0/8",
+            "100.64.0.0/10",
+            "169.254.0.0/16",
+            "172.16.0.0/12",
+            "192.0.0.0/24",
+            "192.0.2.0/24",
+            "192.168.0.0/16",
+            "198.18.0.0/15",
+            "198.51.100.0/24",
+            "203.0.113.0/24",
+            "::1/128",
+            "fc00::/7",
+            "fe80::/10"
+          ],
+          "outboundTag": "block"
+        },
+        {
+          "inboundTag": [
+            "api"
+          ],
+          "outboundTag": "api",
+          "type": "field"
+        }
+      ]
+    },
+    "outbounds": [
+      {
+        "protocol": "freedom",
+        "settings": {}
+      },
+      {
+        "protocol": "blackhole",
+        "settings": {},
+        "tag": "block"
+      }
+    ],
+    "stats": {},
+    "api": {
+      "services": [
+        "StatsService"
+      ],
+      "tag": "api"
+    },
+    "policy": {
+      "levels": {
+        "0": {
+          "statsUserDownlink": true,
+          "statsUserUplink": true
+        }
+      },
+      "system": {
+        "statsInboundUplink" : false,
+        "statsInboundDownlink" : false,
+        "statsOutboundUplink" : false,
+        "statsOutboundDownlink" : false
+      }
+    }
+  }
