@@ -1,0 +1,28 @@
+[Unit]
+Description=vnStat network traffic monitor
+Documentation=man:vnstatd(1) man:vnstat(1) man:vnstat.conf(5)
+After=network.target
+
+[Service]
+ExecStart=/usr/sbin/vnstatd -n
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+User=root
+RestartSec=3
+
+# Hardening
+ProtectSystem=strict
+StateDirectory=vnstat
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+ProtectHome=yes
+ProtectKernelModules=yes
+PrivateTmp=yes
+MemoryDenyWriteExecute=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+
+[Install]
+WantedBy=multi-user.target
+Alias=vnstatd.service
