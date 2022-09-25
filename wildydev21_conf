@@ -1,0 +1,46 @@
+# Nginx Config By WildyDev21
+# ============================================================
+# Please do not try to change / modif this config
+# This config is tag to xray if you modified this 
+# Xray will Error / Crash
+# ============================================================
+# (C) Copyright 2022-2023 By WildyDev21
+
+# // Config For WebServer
+server {
+        listen 85;
+        root /etc/wildydev21/webserver;
+        location / {
+                autoindex on;
+                autoindex_exact_size on;
+        }
+}
+
+# // Config For GRPC
+server {
+        listen 127.0.0.1:34804 http2 so_keepalive=on;
+        root /etc/wildydev21/webserver;
+        client_header_timeout 1071906480m;
+        keepalive_timeout 1071906480m;
+        location /Trojan-GRPC {
+                client_max_body_size 0;
+                grpc_set_header X-Real-IP $proxy_add_x_forwarded_for;
+                client_body_timeout 1071906480m;
+                grpc_read_timeout 1071906480m;
+                grpc_pass grpc://127.0.0.1:34805;
+        }
+        location /Vmess-GRPC {
+                client_max_body_size 0;
+                grpc_set_header X-Real-IP $proxy_add_x_forwarded_for;
+                client_body_timeout 1071906480m;
+                grpc_read_timeout 1071906480m;
+                grpc_pass grpc://127.0.0.1:34806;
+        }
+        location /Vless-GRPC {
+                client_max_body_size 0;
+                grpc_set_header X-Real-IP $proxy_add_x_forwarded_for;
+                client_body_timeout 1071906480m;
+                grpc_read_timeout 1071906480m;
+                grpc_pass grpc://127.0.0.1:34807;
+        }
+}
