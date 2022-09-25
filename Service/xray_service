@@ -1,0 +1,16 @@
+[Unit]
+Description=XRay XTLS Service ( %i )
+Documentation=https://wildydev21.com https://github.com/XTLS/Xray-core
+After=syslog.target network-online.target
+
+[Service]
+User=root
+NoNewPrivileges=true
+ExecStart=/etc/wildydev21/core/xray -c /etc/wildydev21/config/xray/%i.json
+LimitNPROC=10000
+LimitNOFILE=1000000
+Restart=on-failure
+RestartPreventExitStatus=23
+
+[Install]
+WantedBy=multi-user.target
